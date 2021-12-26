@@ -1,29 +1,16 @@
-let canapeData = [];
-
 const fetchCanape = async () => {
-  await fetch("http://localhost:3000/api/products")
-    .then((res) => res.json())
-    .then((Promise) => {
-      canapeData = Promise;
-      console.log(canapeData);
-    });
+  let fetchData = await fetch("http://localhost:3000/api/products");
+  let productCanape = await fetchData.json();
+  return productCanape;
 };
 
 const canapeView = async () => {
-  await fetchCanape();
-  console.log(canapeView);
-  for (let i = 0; i < 8; i += 1) {
-    let items = document.getElementById("items");
-    console.log(items.innerHTML);
-    items.innerHTML = (
-      <a href="$(i._id)">
-        <article>
-          <img src="$(i.imageUrl)" alt="$(i.altTxt)" />
-          <h3 class="productName">"$(i.name)"</h3>
-          <p class="productDescription">"$(i.description)"</p>
-        </article>
-      </a>
-    );
+  let canapeProduct = await fetchCanape();
+  console.log(canapeProduct);
+  let items = document.getElementById("items");
+  for (let i = 0; i < canapeProduct.length; i += 1) {
+    console.log(canapeProduct[i]);
+    items.innerHTML += `<a href="product.html?id=${canapeProduct[i]._id}"> <article> <img src="${canapeProduct[i].imageUrl}" alt="${canapeProduct[i].altTxt}" /> <h3 class="productName">"${canapeProduct[i].name}"</h3> <p class="productDescription">"${canapeProduct[i].description}"</p> </article> </a>`;
   }
 };
 
