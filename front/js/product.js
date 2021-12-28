@@ -1,35 +1,54 @@
-/*localhost:3000/api/products/
-https://www.youtube.com/watch?v=li7Fmtk4RCo*/
+/*localhost:3000/api/products/*/
 
-const product = window.location.search;
+/*Modifier l'url de l'API*/
 
-console.log(product);
+const param = new URLSearchParams(document.location.search);
+let id = param.get("id");
+console.log(id);
+
+/*Appeler l'API*/
 
 const fetchProduct = async () => {
   let fetchDataProduct = await fetch(
-    `http://localhost:3000/api/products/${product}`
+    `http://localhost:3000/api/products/${id}`
   );
   let productData = await fetchDataProduct.json();
   return productData;
 };
-
 fetchProduct();
 console.log(fetchProduct());
 
-const canapeView = async () => {
+/*Insérer l'API*/
+
+const canapeViews = async () => {
   let canapeProductView = await fetchProduct();
-  console.log(canapeProductView());
-  let itemImg = document.getElementById("item__img");
+  console.log(canapeProductView);
+  let itemImg = document.querySelector(".item__img");
   let title = document.getElementById("title");
   let price = document.getElementById("price");
   let description = document.getElementById("description");
   let colors = document.getElementById("colors");
-  for (let i = 0; i < canapeProductView.length; i += 1) {
-    console.log(canapeProduct[i]);
-    itemImg.innerHTML += `<img src="${canapeProductView[i].imageUrl}" alt="${canapeProductView[i].altTxt}" />`;
-    title.innerHTML += `<h1 id="title">"${canapeProductView[i].name}"</h1>`;
-    price.innerHTML += `"${canapeProductView[i].price}"`;
-    description.innerHTML += `"${canapeProductView[i].description}" `;
-    colors.innerHTML += `"${canapeProductView[i].colors}"`;
+  itemImg.innerHTML += `<img src="${canapeProductView.imageUrl}" alt=${canapeProductView.altTxt} />`;
+  title.innerHTML += `<h1 id="title">${canapeProductView.name}</h1>`;
+  price.innerHTML += `${canapeProductView.price}`;
+  description.innerHTML += `${canapeProductView.description}`;
+  colors.innerHTML += `${canapeProductView.colors}`;
+};
+
+canapeViews();
+
+/*Insérer les couleurs*/
+
+colors.forEach((colorViewer) => {
+  colors.appendChild;
+});
+
+/*const colors = async () => {
+  let canapeProductView = await fetchProduct();
+  console.log(canapeProductView);
+  colorsall = document.getElementById("colors");
+  for (let i = 0; i < colors.length; i += 1) {
+    colors.innerHTML += `${canapeProductView.colors}`;
   }
 };
+colors();*/
