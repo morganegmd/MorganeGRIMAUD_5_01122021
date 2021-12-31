@@ -27,7 +27,6 @@ const canapeViews = async () => {
   let title = document.getElementById("title");
   let price = document.getElementById("price");
   let description = document.getElementById("description");
-
   itemImg.innerHTML += `<img src="${canapeProductView.imageUrl}" alt=${canapeProductView.altTxt} />`;
   title.innerHTML += `<h1 id="title">${canapeProductView.name}</h1>`;
   price.innerHTML += `${canapeProductView.price}`;
@@ -47,19 +46,14 @@ const color = (colors) => {
   }
 };
 
-/*Enregistrer les données saisies par l'utilisateur 
-  L'alerter en cas d'erreur de saisie
-  Sauvegarder dans le local storage
-  Envoyer ses informations dans le panier*/
+/*Enregistrer le/les choix de l'utilisateur*/
 
 const addCart = (canapeProductView) => {
   let bouton = document.getElementById("addToCart");
   bouton.addEventListener("click", () => {
-    console.log("bouton");
     let color = document.getElementById("colors").value;
     let quantity = document.getElementById("quantity").value;
-    console.log(color, quantity);
-    let information = `${color}``${quantity}`;
+    /*L'alerter en cas d'erreur de saisie*/
     if (!color) {
       alert("Veuillez choisir une couleur");
       return;
@@ -68,35 +62,22 @@ const addCart = (canapeProductView) => {
       alert("Veuillez choisir une quantité entre 1 et 100");
       return;
     }
-    if ((color == null, quantity == null)) {
-      localStorage.setItem("color", `${color}`);
-      localStorage.setItem("number", `${quantity}`);
+    /*Sauvegarder dans le local storage*/
+    let informations = {
+      id,
+      color,
+      quantity,
+    };
+    /*Convertir du Json en JS/ou l'inverse
+      Cela sert à ce que ce que le local storage puisse lire le JS et l'inverse (à vérifier*/
+    let saveProduct = JSON.parse(localStorage.getItem("product"));
+    if (saveProduct === null) {
+      saveProduct = [];
+      saveProduct.push(informations);
+      localStorage.setItem("product", JSON.stringify(saveProduct));
     } else {
-      information.push();
-      localStorage.getItem("color");
-      localStorage.getItem("number");
+      saveProduct.push(informations);
+      localStorage.setItem("product", JSON.stringify(saveProduct));
     }
-
-    /*régler le pb de l'ajout*/
   });
 };
-
-/*if ((color == null, quantity == null)) {
-      localStorage.setItem("color", `${color}`);
-      localStorage.setItem("nombre", `${quantity}`);
-    } else {
-      localStorage.setItem("color", `${color}`);
-      localStorage.setItem("nombre", `${quantity}`);
-    }
-    
-    
-     let information = `${color}``${quantity}`;
-    if ((color == null, quantity == null)) {
-      localStorage.setItem("color", `${color}`);
-      localStorage.setItem("nombre", `${quantity}`);
-    } else {
-      color.push();
-      quantity.push();
-      localStorage.setItem("color", `${color}`);
-      localStorage.setItem("nombre", `${quantity}`);
-    }*/

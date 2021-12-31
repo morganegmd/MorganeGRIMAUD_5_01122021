@@ -13,7 +13,6 @@ const canapeView = async () => {
   console.log(canapeProduct);
   let items = document.getElementById("items");
   for (let i = 0; i < canapeProduct.length; i += 1) {
-    console.log(canapeProduct[i]);
     items.innerHTML += `<a href="product.html?id=${canapeProduct[i]._id}"> <article> <img src="${canapeProduct[i].imageUrl}" alt="${canapeProduct[i].altTxt}" /> <h3 class="productName">${canapeProduct[i].name}</h3> <p class="productDescription">${canapeProduct[i].description}</p> </article> </a>`;
   }
 };
