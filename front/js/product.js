@@ -53,6 +53,10 @@ const addCart = (canapeProductView) => {
   bouton.addEventListener("click", () => {
     let color = document.getElementById("colors").value;
     let quantity = document.getElementById("quantity").value;
+    let itemImg = document.querySelector(".item__img");
+    let title = document.getElementById("title");
+    let price = document.getElementById("price");
+    let description = document.getElementById("description");
     /*L'alerter en cas d'erreur de saisie*/
     if (!color) {
       alert("Veuillez choisir une couleur");
@@ -67,6 +71,10 @@ const addCart = (canapeProductView) => {
       id,
       color,
       quantity,
+      itemImg,
+      title,
+      price,
+      description,
     };
     /*Convertir du Json en JS/ou l'inverse
       Cela sert à ce que ce que le local storage puisse lire le JS et l'inverse (à vérifier*/

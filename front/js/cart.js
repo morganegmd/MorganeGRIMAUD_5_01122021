@@ -14,13 +14,13 @@ if (saveProduct === null) {
     console.log(saveProduct[i].length);
     panierDataView.innerHTML += ` <article class="cart__item" data-id="${saveProduct[i].id}" data-color="${saveProduct[i].color}">
             <div class="cart__item__img">
-                <img src="${canapeProductView.imageUrl}" alt="${canapeProductView.altTxt}" />
+                <img src="${saveProduct[i].imageUrl}" alt="${saveProduct[i].altTxt}" />
                 </div>
                 <div class="cart__item__content">
                   <div class="cart__item__content__description">
-                    <h2>"${canapeProductView.name}"</h2>
+                    <h2>"${saveProduct[i].name}"</h2>
                     <p>"${saveProduct[i].color}"</p>
-                    <p>"${canapeProductView.price}"</p>
+                    <p>"${saveProduct[i].price}"</p>
                   </div>
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
@@ -33,6 +33,6 @@ if (saveProduct === null) {
                   </div>
                 </div>
               </article> `;
-    quantityDataView.innerHTML += `<p>Total (<span id="totalQuantity">${saveProduct.quantity}</span> articles) : <span id="totalPrice">${canapeProductView.price}</span> €</p>`;
+    quantityDataView.innerHTML += `<p>Total (<span id="totalQuantity">${saveProduct[i].quantity}</span> articles) : <span id="totalPrice">${saveProduct[i].price}</span> €</p>`;
   }
 }
