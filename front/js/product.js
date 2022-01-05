@@ -32,7 +32,6 @@ const canapeViews = async () => {
   price.innerHTML += `${canapeProductView.price}`;
   description.innerHTML += `${canapeProductView.description}`;
   color(canapeProductView.colors);
-  addCart(canapeProductView);
 };
 
 canapeViews();
@@ -48,44 +47,43 @@ const color = (colors) => {
 
 /*Enregistrer le/les choix de l'utilisateur*/
 
-const addCart = (canapeProductView) => {
-  let bouton = document.getElementById("addToCart");
-  bouton.addEventListener("click", () => {
-    let color = document.getElementById("colors").value;
-    let quantity = document.getElementById("quantity").value;
-    let itemImg = document.querySelector(".item__img");
-    let title = document.getElementById("title");
-    let price = document.getElementById("price");
-    let description = document.getElementById("description");
-    /*L'alerter en cas d'erreur de saisie*/
-    if (!color) {
-      alert("Veuillez choisir une couleur");
-      return;
-    }
-    if (!(quantity > 0 && quantity < 101)) {
-      alert("Veuillez choisir une quantité entre 1 et 100");
-      return;
-    }
-    /*Sauvegarder dans le local storage*/
-    let informations = {
-      id,
-      color,
-      quantity,
-      itemImg,
-      title,
-      price,
-      description,
-    };
-    /*Convertir du Json en JS/ou l'inverse
-      Cela sert à ce que ce que le local storage puisse lire le JS et l'inverse (à vérifier*/
-    let saveProduct = JSON.parse(localStorage.getItem("product"));
-    if (saveProduct === null) {
-      saveProduct = [];
-      saveProduct.push(informations);
-      localStorage.setItem("product", JSON.stringify(saveProduct));
-    } else {
-      saveProduct.push(informations);
-      localStorage.setItem("product", JSON.stringify(saveProduct));
-    }
-  });
-};
+let bouton = document.getElementById("addToCart");
+bouton.addEventListener("click", () => {
+  let color = document.getElementById("colors").value;
+  let quantity = Number(document.getElementById("quantity").value);
+  let itemImg = document.querySelector(".item__img img").src;
+  let title = document.getElementById("title").innerText;
+  let price = Number(document.getElementById("price").innerText);
+  let description = document.getElementById("description").innerText;
+  /*L'alerter en cas d'erreur de saisie*/
+  if (!color) {
+    alert("Veuillez choisir une couleur");
+    return;
+  }
+  if (!(quantity > 0 && quantity < 101)) {
+    alert("Veuillez choisir une quantité entre 1 et 100");
+    return;
+  }
+  /*Sauvegarder dans le local storage*/
+  let informations = {
+    id,
+    color,
+    quantity,
+    itemImg,
+    title,
+    price,
+  };
+  console.log(informations);
+  /*Convertir du Json en JS/ou l'inverse
+      Le local storage lit que les chaînes de caractères et non les tableaux donc cela permet de transformer en chaine de caractère, sinon la lecture serait (objet,object)
+      A l'inverse cela permet de transformer la chaine de caractère en objet*/
+  let saveProduct = JSON.parse(localStorage.getItem("product"));
+  if (saveProduct === null) {
+    saveProduct = [];
+    saveProduct.push(informations);
+    localStorage.setItem("product", JSON.stringify(saveProduct));
+  } else {
+    saveProduct.push(informations);
+    localStorage.setItem("product", JSON.stringify(saveProduct));
+  }
+});
