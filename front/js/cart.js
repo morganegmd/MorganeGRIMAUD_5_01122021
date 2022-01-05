@@ -35,66 +35,45 @@ if (saveProduct == null) {
   }
 }
 
-/*Eviter les répitions dans le panier*/
-/*let foundProduct = saveProduct.find((p) => p.id == saveProduct.id);
-if (foundProduct === null) {
-  saveProduct.push;
-} else {
-  foundProduct = `${saveProduct.quantity}` + `${saveProduct.quantity}`;
-  saveProduct.push();
-}
+/*Quantité à modifier page panier*/
 
-/*console.log(foundProduct);*/
-
-/*Supprimer un article*/
-
-let butonDelete = document.querySelectorAll(
-  ".cart__item__content__settings__delete"
-);
-
-for (let k = 0; k < butonDelete.length; k++) {
-  butonDelete[k].addEventListener("click", () => {
-    let idDelete = saveProduct[k].id;
-    console.log(idDelete);
-    saveProduct = saveProduct.filter(
-      (element) => element.id !== saveProduct.id
-    );
-    console.log(saveProduct);
-    localStorage.setItem("product", JSON.stringify(saveProduct));
-    window.location.href = "cart.html";
+function quantityChange() {
+  bouton.addEventListener("change", () => {
+    let inputChange = document.querySelectorAll(".itemQuantity").value;
+    localStorage.getItem("product");
+    saveProduct.push("inputChange");
   });
 }
 
-console.log(butonDelete);
+/*Supprimer un article*/
+
+const butonDelete = document.querySelectorAll(".deleteItem");
+function productDelete() {
+  butonDelete.addEventListener("click", () => {
+    console.log(butonDelete);
+    for (let k = 0; k < butonDelete.length; k++) {
+      localStorage.clear(butonDelete[k]);
+      return;
+    }
+  });
+}
 
 /*Prix total / Quantité totale du panier*/
 
-function equalPrice() {
-  /*Prix*/
-  let fullPrice = [];
-  let price = document.querySelectorAll(".price");
-  for (let pushPrice in price) {
-    fullPrice.push(price[pushPrice].innerHTML);
+/*function equalPrice() {
+  let saveProduct = JSON.parse(localStorage.getItem("product"));
+  let fullQuantity = 0;
+  let fullPrice = 0;
+  for (let pushPrice of saveProduct) {
+    fullPrice += pushPrice.price * pushPrice.quantity;
+    fullQuantity += pushPrice.quantity;
   }
-  const reducer = (acc, currentVal) => acc + currentVal;
-  fullPrice = fullPrice.reduce(reducer);
 
-  /*Quantité*/
-  let fullQuantity = [];
-  let quantity = document.querySelectorAll("#quantity");
-  for (let pushQuantity in quantity) {
-    fullPrice.push(price[pushPrice].innerHTML);
-  }
-  const reducer = (acc, currentVal) => acc + currentVal;
-  fullPrice = fullPrice.reduce(reducer);
-
-  let cartPrice = document.querySelector(".cart__price");
-  cartPrice.innerHTML += `<div class="cart__price">
-                <p>Total (<span id="totalQuantity">"${quantity}</span> articles) : <span id="totalPrice">${equalPrice}</span> €</p>
-                </div>`;
+  document.getElementById("totalQuantity").innerHTML = fullQuantity;
+  document.getElementById("totalPrice").innerHTML = fullPrice;
 }
 
-equalPrice();
+equalPrice();*/
 
 /*Formulaire*/
 
@@ -136,10 +115,8 @@ fetch("http://localhost:3000/api/products/order", post)
   .then((data) => {
     localStorage.clear();
     console.log(data);
-    localStorage.setItem("orderId", `${saveAnswer}`);
-    localStorage.setItem("total", `${price}`);
-
-    /* Le fait de préciser la destination du lien ici et non dans la balise <a> du HTML permet d'avoir le temps de placer les éléments comme l'orderId dans le localStorage avant le changement de page.*/
+    localStorage.setItem("orderCustomer", saveAnswer);
+    localStorage.setItem("total", fullPrice);
     document.location.href = "confirmation.html";
   });
 

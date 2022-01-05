@@ -78,12 +78,18 @@ bouton.addEventListener("click", () => {
       Le local storage lit que les chaînes de caractères et non les tableaux donc cela permet de transformer en chaine de caractère, sinon la lecture serait (objet,object)
       A l'inverse cela permet de transformer la chaine de caractère en objet*/
   let saveProduct = JSON.parse(localStorage.getItem("product"));
-  if (saveProduct === null) {
+  if (!saveProduct) {
     saveProduct = [];
     saveProduct.push(informations);
-    localStorage.setItem("product", JSON.stringify(saveProduct));
   } else {
+    for (let h = 0; h < saveProduct.length; h++) {
+      if (saveProduct[h].id == id && saveProduct[h].color == color) {
+        saveProduct[h].quantity += quantity;
+        localStorage.setItem("product", JSON.stringify(saveProduct));
+        return;
+      }
+    }
     saveProduct.push(informations);
-    localStorage.setItem("product", JSON.stringify(saveProduct));
   }
+  localStorage.setItem("product", JSON.stringify(saveProduct));
 });
