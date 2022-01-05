@@ -60,7 +60,7 @@ function productDelete() {
 
 /*Prix total / Quantité totale du panier*/
 
-/*function equalPrice() {
+function equalPrice() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
   let fullQuantity = 0;
   let fullPrice = 0;
@@ -73,7 +73,7 @@ function productDelete() {
   document.getElementById("totalPrice").innerHTML = fullPrice;
 }
 
-equalPrice();*/
+equalPrice();
 
 /*Formulaire*/
 
@@ -100,6 +100,15 @@ butonOrder.addEventListener("click", () => {
   } else {
     saveAnswer.push(informations);
     localStorage.setItem("contact", JSON.stringify(saveAnswer));
+  }
+  if(!firstName){
+    alert("Veuillez saisir votre nom")
+  }
+  if (!saveAnswer) {
+    alert("Veuillez remplir tout les champs s'il vous plaît");
+    return;
+  }
+  
   }
 });
 
