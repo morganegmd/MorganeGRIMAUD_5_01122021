@@ -101,14 +101,12 @@ butonOrder.addEventListener("click", () => {
     saveAnswer.push(informations);
     localStorage.setItem("contact", JSON.stringify(saveAnswer));
   }
-  if(!firstName){
-    alert("Veuillez saisir votre nom")
+  if (!firstName) {
+    alert("Veuillez saisir votre nom");
   }
   if (!saveAnswer) {
     alert("Veuillez remplir tout les champs s'il vous plaît");
     return;
-  }
-  
   }
 });
 
