@@ -1,124 +1,160 @@
-/*Récupérer les données stockées dans le localstorage*/
+function viewProduct() {
+  /*Récupérer les données stockées dans le localstorage*/
 
-let saveProduct = JSON.parse(localStorage.getItem("product"));
-console.log(saveProduct);
+  let saveProduct = JSON.parse(localStorage.getItem("product"));
+  console.log(saveProduct);
+  let panierDataView = document.getElementById("cart__items");
 
-let panierDataView = document.getElementById("cart__items");
+  /*Afficher les données des produits dans le panier */
 
-/*Afficher les données des produits dans le panier */
-
-if (saveProduct == null) {
-  /*Pas de changement si le panier est vide*/
-} else {
-  for (let i = 0; i < saveProduct.length; i++) {
-    panierDataView.innerHTML += ` <article class="cart__item" data-id="${saveProduct[i].id}" data-color="${saveProduct[i].color}">
-            <div class="cart__item__img">
-                <img src="${saveProduct[i].itemImg}" alt="${saveProduct[i].altTxt}" />
-                </div>
-                <div class="cart__item__content">
-                  <div class="cart__item__content__description">
-                    <h2>${saveProduct[i].title}</h2>
-                    <p>${saveProduct[i].color}</p>
-                    <p>${saveProduct[i].price} €</p>
+  if (saveProduct == null) {
+    /*Pas de changement si le panier est vide*/
+  } else {
+    for (let i = 0; i < saveProduct.length; i++) {
+      panierDataView.innerHTML += ` <article class="cart__item" data-id="${saveProduct[i].id}" data-color="${saveProduct[i].color}">
+              <div class="cart__item__img">
+                  <img src="${saveProduct[i].itemImg}" alt="${saveProduct[i].altTxt}" />
                   </div>
-                  <div class="cart__item__content__settings">
-                    <div class="cart__item__content__settings__quantity">
-                      <p>Qté : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${saveProduct[i].quantity}>
+                  <div class="cart__item__content">
+                    <div class="cart__item__content__description">
+                      <h2>${saveProduct[i].title}</h2>
+                      <p>${saveProduct[i].color}</p>
+                      <p>${saveProduct[i].price} €</p>
                     </div>
-                    <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
+                    <div class="cart__item__content__settings">
+                      <div class="cart__item__content__settings__quantity">
+                        <p>Qté : </p>
+                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${saveProduct[i].quantity}>
+                      </div>
+                      <div class="cart__item__content__settings__delete">
+                        <p class="deleteItem">Supprimer</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article> `;
+                </article> `;
+    }
   }
 }
 
-/*Quantité à modifier page panier*/
-
-function quantityChange() {
-  bouton.addEventListener("change", () => {
-    let inputChange = document.querySelectorAll(".itemQuantity").value;
-    localStorage.getItem("product");
-    saveProduct.push("inputChange");
-  });
-}
+viewProduct();
 
 /*Supprimer un article*/
 
-const butonDelete = document.querySelectorAll(".deleteItem");
 function productDelete() {
+  let saveProduct = JSON.parse(localStorage.getItem("product"));
+  const butonDelete = document.querySelectorAll(".deleteItem");
   for (let k = 0; k < butonDelete.length; k++) {
     butonDelete[k].addEventListener("click", () => {
-    console.log(butonDelete[k]);
-    let article = document.querySelector(".cart__item")
-    let id = article.dataset.id
-    let color = article.dataset.color
-    console.log(id, color)
-    saveProduct = saveProduct.filter ((s) => s.id == id && s.color == color)
-    localStorage.setItem("product", JSON.stringify(saveProduct))
-    article.remove()
-    
-  })
+      console.log(butonDelete[k]);
+      let article = document.querySelector(".cart__item");
+      let id = article.dataset.id;
+      let color = article.dataset.color;
+      console.log(id, color);
+      saveProduct = saveProduct.filter((s) => s.id == id && s.color == color);
+      localStorage.setItem("product", JSON.stringify(saveProduct));
+      article.remove();
+      calculate();
+    });
   }
 }
-productDelete()
+productDelete();
 
-  
+/*Quantité à modifier page panier
+function quantityChange() {
+  let saveProduct = JSON.parse(localStorage.getItem("product"));
+  fewDataQantity = [];
+  console.log(saveProduct);
+  let butonAdd = document.querySelectorAll(".itemQuantity");
+  for (let w = 0; w < butonAdd.length; w++) {
+    butonAdd[w].addEventListener("change", () => {
+      fewDataQantity.push(quantityChange[w]);
+      let change = JSON.parse(localStorage.getItem("product"));
+      localStorage.setItem("product", JSON.stringify(saveProduct));
 
+      console.log(butonAdd[w]);
+      calculate();
+    });
+  }
+}*/
+
+function quantityChange() {
+  let saveProduct = JSON.parse(localStorage.getItem("product"));
+  let articleCart = document.getElementsByClassName("cart__item");
+  // Boucle qui ajoute un eventListener sur toute les vignettes d'article affichés dans le panier
+  for (let a = 0; a < articleCart.length; a++) {
+    articleCart[a].addEventListener("input", (event) => {
+      /*On envoie la quantité selectionnée dans le panier
+      parseInt = analyse une chaîne de caractère fournie en argument et renvoie un entier exprimé dans une base donnée (doc mdn à voir)
+      target*/
+
+      saveProduct[a].quantity = parseInt(event);
+      // On met à jour le localstorage
+      localStorage.setItem("product", JSON.stringify(saveProduct));
+      // on lance la fonction qui va mettre à jour le prix et le total de la page panier
+      calculate();
+    });
+  }
+}
+
+quantityChange();
 
 /*Prix total / Quantité totale du panier*/
 
-function equalPrice() {
+function calculate() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
   let fullQuantity = 0;
   let fullPrice = 0;
+  /*La valeur initiale Si aucune valeur initiale n'est fournie, le premier élément du tableau est utilisé (et la boucle de traitement ne le parcourera pas). Si on appelle reduce() sur un tableau vide sans fournir de valeur initiale, on aura une erreur.*/
+
   for (let pushPrice of saveProduct) {
     fullPrice += pushPrice.price * pushPrice.quantity;
     fullQuantity += pushPrice.quantity;
   }
-  for (let o = 0; o < saveProduct.length; o++)
   document.getElementById("totalQuantity").innerHTML = fullQuantity;
   document.getElementById("totalPrice").innerHTML = fullPrice;
 }
 
-equalPrice();
+calculate();
 
 /*Formulaire*/
 
-let butonOrder = document.getElementById("order");
-butonOrder.addEventListener("click", () => {
-  let firstName = document.getElementById("firstName").value;
-  let lastName = document.getElementById("lastName").value;
-  let address = document.getElementById("address").value;
-  let city = document.getElementById("city").value;
-  let email = document.getElementById("email").value;
+function form() {
+  let butonOrder = document.getElementById("order");
+  butonOrder.addEventListener("click", (event) => {
+    let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+    let address = document.getElementById("address").value;
+    let city = document.getElementById("city").value;
+    let email = document.getElementById("email").value;
 
-  let informations = {
-    firstName,
-    lastName,
-    address,
-    city,
-    email,
-  };
-  let saveAnswer = JSON.parse(localStorage.getItem("contact"));
-  if (saveAnswer === null) {
-    saveAnswer = [];
-    saveAnswer.push(informations);
-    localStorage.setItem("contact", JSON.stringify(saveAnswer));
-  } else {
-    saveAnswer.push(informations);
-    localStorage.setItem("contact", JSON.stringify(saveAnswer));
-  }
-  if (!firstName) {
-    alert("Veuillez saisir votre nom");
-  }
-  if (!saveAnswer) {
-    alert("Veuillez remplir tout les champs s'il vous plaît");
-    return;
-  }
-});
+    let informations = {
+      firstName,
+      lastName,
+      address,
+      city,
+      email,
+    };
+    let saveAnswer = JSON.parse(localStorage.getItem("contact"));
+    event.preventDefault();
+    if (saveAnswer === null) {
+      saveAnswer = [];
+      saveAnswer.push(informations);
+      localStorage.setItem("contact", JSON.stringify(saveAnswer));
+    } else {
+      saveAnswer.push(informations);
+      localStorage.setItem("contact", JSON.stringify(saveAnswer));
+    }
+    if (!firstName) {
+      alert("Veuillez saisir votre nom");
+    }
+    if (!saveAnswer) {
+      alert("Veuillez remplir tout les champs s'il vous plaît");
+      return;
+    }
+  });
+}
+
+form();
 
 /*Numéro de commande*/
 
