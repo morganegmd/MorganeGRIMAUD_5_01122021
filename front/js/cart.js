@@ -49,14 +49,24 @@ function quantityChange() {
 
 const butonDelete = document.querySelectorAll(".deleteItem");
 function productDelete() {
-  butonDelete.addEventListener("click", () => {
-    console.log(butonDelete);
-    for (let k = 0; k < butonDelete.length; k++) {
-      localStorage.clear(butonDelete[k]);
-      return;
-    }
-  });
+  for (let k = 0; k < butonDelete.length; k++) {
+    butonDelete[k].addEventListener("click", () => {
+    console.log(butonDelete[k]);
+    let article = document.querySelector(".cart__item")
+    let id = article.dataset.id
+    let color = article.dataset.color
+    console.log(id, color)
+    saveProduct = saveProduct.filter ((s) => s.id == id && s.color == color)
+    localStorage.setItem("product", JSON.stringify(saveProduct))
+    article.remove()
+    
+  })
+  }
 }
+productDelete()
+
+  
+
 
 /*Prix total / Quantité totale du panier*/
 
@@ -68,7 +78,7 @@ function equalPrice() {
     fullPrice += pushPrice.price * pushPrice.quantity;
     fullQuantity += pushPrice.quantity;
   }
-
+  for (let o = 0; o < saveProduct.length; o++)
   document.getElementById("totalQuantity").innerHTML = fullQuantity;
   document.getElementById("totalPrice").innerHTML = fullPrice;
 }
@@ -112,7 +122,7 @@ butonOrder.addEventListener("click", () => {
 
 /*Numéro de commande*/
 
-let post = {
+/*let post = {
   method: "POST",
   body: JSON.stringify(order),
   headers: { "Content-Type": "application/json" },
@@ -120,11 +130,11 @@ let post = {
 fetch("http://localhost:3000/api/products/order", post)
   .then((response) => response.json())
   .then((data) => {
-    localStorage.clear();
+  
     console.log(data);
     localStorage.setItem("orderCustomer", saveAnswer);
     localStorage.setItem("total", fullPrice);
     document.location.href = "confirmation.html";
-  });
+  });*/
 
 /* Répétitions, supprimez, et calculer le panier à résoudre, fetch */
