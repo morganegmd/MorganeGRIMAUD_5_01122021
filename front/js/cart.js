@@ -42,14 +42,13 @@ viewProduct();
 
 function productDelete() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
-  const butonDelete = document.querySelectorAll(".deleteItem");
-  for (let k = 0; k < butonDelete.length; k++) {
-    butonDelete[k].addEventListener("click", () => {
-      console.log(butonDelete[k]);
+  console.log(saveProduct);
+  const BUTONDELETE = document.querySelectorAll(".deleteItem");
+  for (let i = 0; i < BUTONDELETE.length; i++) {
+    BUTONDELETE[i].addEventListener("click", () => {
       let article = document.querySelector(".cart__item");
       let id = article.dataset.id;
       let color = article.dataset.color;
-      console.log(id, color);
       saveProduct = saveProduct.filter((s) => s.id == id && s.color == color);
       localStorage.setItem("product", JSON.stringify(saveProduct));
       article.remove();
@@ -59,25 +58,33 @@ function productDelete() {
 }
 productDelete();
 
-/*Quantité à modifier page panier
+/*Quantité à modifier page panier*/
 function quantityChange() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
+  const input = document.querySelectorAll("input.itemQuantity");
+  /*console.log(saveProduct);
   fewDataQantity = [];
-  console.log(saveProduct);
   let butonAdd = document.querySelectorAll(".itemQuantity");
-  for (let w = 0; w < butonAdd.length; w++) {
-    butonAdd[w].addEventListener("change", () => {
+  console.log(typeof butonAdd);
+  for (let w = 0; w < 2; w++) {
+    butonAdd[w].addEventListener("input", () => {
       fewDataQantity.push(quantityChange[w]);
       let change = JSON.parse(localStorage.getItem("product"));
       localStorage.setItem("product", JSON.stringify(saveProduct));
 
-      console.log(butonAdd[w]);
+      console.log(butonAdd[w].value);
+      calculate();*/
+  /*input.forEach((input) => {
+    input.addEventListener("input", (e) => {
+      e.target.setAttribute("value", e.target.valueAsNumber);
+      console.log(e.target.getAttribute("value"));
       calculate();
     });
-  }
-}*/
+  });*/
+}
+quantityChange();
 
-function quantityChange() {
+/*function quantityChange() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
   let articleCart = document.getElementsByClassName("cart__item");
   // Boucle qui ajoute un eventListener sur toute les vignettes d'article affichés dans le panier
@@ -85,7 +92,7 @@ function quantityChange() {
     articleCart[a].addEventListener("input", (event) => {
       /*On envoie la quantité selectionnée dans le panier
       parseInt = analyse une chaîne de caractère fournie en argument et renvoie un entier exprimé dans une base donnée (doc mdn à voir)
-      target*/
+      target
 
       saveProduct[a].quantity = parseInt(event);
       // On met à jour le localstorage
@@ -96,7 +103,7 @@ function quantityChange() {
   }
 }
 
-quantityChange();
+quantityChange();*/
 
 /*Prix total / Quantité totale du panier*/
 
@@ -119,7 +126,8 @@ calculate();
 /*Formulaire*/
 
 function form() {
-  let butonOrder = document.getElementById("order");
+  localStorage.setItem;
+  /*let butonOrder = document.getElementById("order");
   butonOrder.addEventListener("click", (event) => {
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
@@ -134,10 +142,9 @@ function form() {
       city,
       email,
     };
-    let saveAnswer = JSON.parse(localStorage.getItem("contact"));
+    let saveAnswer = [];
     event.preventDefault();
     if (saveAnswer === null) {
-      saveAnswer = [];
       saveAnswer.push(informations);
       localStorage.setItem("contact", JSON.stringify(saveAnswer));
     } else {
@@ -151,26 +158,30 @@ function form() {
       alert("Veuillez remplir tout les champs s'il vous plaît");
       return;
     }
-  });
+  });*/
 }
 
 form();
 
 /*Numéro de commande*/
 
-/*let post = {
-  method: "POST",
-  body: JSON.stringify(order),
-  headers: { "Content-Type": "application/json" },
-};
-fetch("http://localhost:3000/api/products/order", post)
-  .then((response) => response.json())
-  .then((data) => {
-  
-    console.log(data);
-    localStorage.setItem("orderCustomer", saveAnswer);
-    localStorage.setItem("total", fullPrice);
-    document.location.href = "confirmation.html";
-  });*/
+/*function sendtoConfirmation() {
+  let post = {
+    method: "POST",
+    body: JSON.stringify(order),
+    headers: { "Content-Type": "application/json" },
+  };
+  if (yy) {
+  } else {
+    fetch("http://localhost:3000/api/products/order", post)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        localStorage.setItem("orderCustomer", saveAnswer);
+        localStorage.setItem("total", fullPrice);
+        document.location.href = "confirmation.html";
+      });
+  }
+}*/
 
-/* Répétitions, supprimez, et calculer le panier à résoudre, fetch */
+/*  supprimez, localsto changement inputquantity, formulaire ,fetch */
