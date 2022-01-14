@@ -113,7 +113,7 @@ function calculate() {
   let fullPrice = 0;
   /*La valeur initiale Si aucune valeur initiale n'est fournie, le premier élément du tableau est utilisé (et la boucle de traitement ne le parcourera pas). Si on appelle reduce() sur un tableau vide sans fournir de valeur initiale, on aura une erreur.*/
 
-  for (let pushPrice of saveProduct) {
+  for (let pushPrice in saveProduct) {
     fullPrice += pushPrice.price * pushPrice.quantity;
     fullQuantity += pushPrice.quantity;
   }
@@ -125,8 +125,33 @@ calculate();
 
 /*Formulaire*/
 
-function form() {
-  localStorage.setItem;
+function informationsSend() {
+  const btnSend = document.querySelector("#order");
+  btnSend.addEventListener("click", (event) => {
+    event.preventDefault(); //change le comportement par défaut lorsque qu'on clique sur un bouton
+    //Formulaire
+    let contact = {
+      firstName: document.querySelector("#firstName").value,
+      lastName: document.querySelector("#lastName").value,
+      address: document.querySelector("#address").value,
+      city: document.querySelector("#city").value,
+      email: document.querySelector("#email").value,
+    };
+
+    localStorage.setItem("contact", JSON.stringify(contact));
+
+    //Contrôler le formulaire*/
+
+    //Objet contenant les produits et le contact
+    let saveProduct = JSON.parse(localStorage.getItem("product"));
+    console.log(saveProduct);
+
+    const sendInformationsAll = {
+      saveProduct,
+      contact,
+    };
+    console.log(sendInformationsAll);
+  });
   /*let butonOrder = document.getElementById("order");
   butonOrder.addEventListener("click", (event) => {
     let firstName = document.getElementById("firstName").value;
@@ -161,7 +186,7 @@ function form() {
   });*/
 }
 
-form();
+informationsSend();
 
 /*Numéro de commande*/
 
