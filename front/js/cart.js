@@ -129,6 +129,7 @@ function informationsSend() {
   const btnSend = document.querySelector("#order");
   btnSend.addEventListener("click", (event) => {
     event.preventDefault(); //change le comportement par défaut lorsque qu'on clique sur un bouton
+
     //Formulaire
     let contact = {
       firstName: document.querySelector("#firstName").value,
@@ -140,7 +141,27 @@ function informationsSend() {
 
     localStorage.setItem("contact", JSON.stringify(contact));
 
-    //Contrôler le formulaire*/
+    //Contrôler le formulaire
+
+    //Firstname et Lastname
+    function nameControl() {
+      /*"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie*/
+      const firstNameControl = contact.firstName;
+      const lastNameControl = contact.lastName;
+
+      if (/^[A-Za-z,-]{2,10}$/.test(firstNameControl, lastNameControl)) {
+        console.log("ok");
+      } else {
+        console.log("ko");
+      }
+
+      if (nameControl()) {
+        localStorage.setItem("contact", JSON.stringify(contact));
+      } else {
+        alert("La saisie n'est pas valide");
+      }
+    }
+    //"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie
 
     //Objet contenant les produits et le contact
     let saveProduct = JSON.parse(localStorage.getItem("product"));
