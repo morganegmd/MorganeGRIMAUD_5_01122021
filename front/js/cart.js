@@ -2,7 +2,6 @@ function viewProduct() {
   /*Récupérer les données stockées dans le localstorage*/
 
   let saveProduct = JSON.parse(localStorage.getItem("product"));
-  console.log(saveProduct);
   let panierDataView = document.getElementById("cart__items");
 
   /*Afficher les données des produits dans le panier */
@@ -42,7 +41,6 @@ viewProduct();
 
 function productDelete() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
-  console.log(saveProduct);
   const BUTONDELETE = document.querySelectorAll(".deleteItem");
   for (let i = 0; i < BUTONDELETE.length; i++) {
     BUTONDELETE[i].addEventListener("click", () => {
@@ -146,26 +144,31 @@ function informationsSend() {
     //Firstname et Lastname
     function nameControl() {
       /*"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie*/
-      const firstNameControl = contact.firstName;
-      const lastNameControl = contact.lastName;
+      /*const firstNameControl = contact.firstName;
+      console.log(firstNameControl);*/
 
-      if (/^[A-Za-z,-]{2,10}$/.test(firstNameControl, lastNameControl)) {
-        console.log("ok");
+      //"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie
+      if (/^[A-Za-z,-]{2,10}$/.test(contact.firstName)) {
+        return true;
       } else {
-        console.log("ko");
-      }
-
-      if (nameControl()) {
-        localStorage.setItem("contact", JSON.stringify(contact));
-      } else {
-        alert("La saisie n'est pas valide");
+        
+        alert("Les caractères spéciaux ne sont pas valides (sauf le - et .) \n Le prénom doit au minimum faire deux lettres et au maximum dix lettres");
+        return false;
       }
     }
-    //"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie
+    
+    if (nameControl()) {
+        localStorage.setItem("contact", JSON.stringify(contact));
+        console.log(nameControl());
+    } else {
+        alert("La saisie est erronée");
+        console.log(nameControl());
+      }
+
+    
 
     //Objet contenant les produits et le contact
     let saveProduct = JSON.parse(localStorage.getItem("product"));
-    console.log(saveProduct);
 
     const sendInformationsAll = {
       saveProduct,
@@ -173,38 +176,7 @@ function informationsSend() {
     };
     console.log(sendInformationsAll);
   });
-  /*let butonOrder = document.getElementById("order");
-  butonOrder.addEventListener("click", (event) => {
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
-    let address = document.getElementById("address").value;
-    let city = document.getElementById("city").value;
-    let email = document.getElementById("email").value;
-
-    let informations = {
-      firstName,
-      lastName,
-      address,
-      city,
-      email,
-    };
-    let saveAnswer = [];
-    event.preventDefault();
-    if (saveAnswer === null) {
-      saveAnswer.push(informations);
-      localStorage.setItem("contact", JSON.stringify(saveAnswer));
-    } else {
-      saveAnswer.push(informations);
-      localStorage.setItem("contact", JSON.stringify(saveAnswer));
-    }
-    if (!firstName) {
-      alert("Veuillez saisir votre nom");
-    }
-    if (!saveAnswer) {
-      alert("Veuillez remplir tout les champs s'il vous plaît");
-      return;
-    }
-  });*/
+  
 }
 
 informationsSend();
