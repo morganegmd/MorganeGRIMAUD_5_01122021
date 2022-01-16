@@ -42,24 +42,29 @@ viewProduct();
 function productDelete() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
   const BUTONDELETE = document.querySelectorAll(".deleteItem");
-  for (let i = 0; i < BUTONDELETE.length; i++) {
-    BUTONDELETE[i].addEventListener("click", () => {
+  for (let o = 0; o < BUTONDELETE.length; o++) {
+    BUTONDELETE[o].addEventListener("click", (event) => {
       let article = document.querySelector(".cart__item");
       let id = article.dataset.id;
       let color = article.dataset.color;
-      saveProduct = saveProduct.filter((s) => s.id == id && s.color == color);
+      console.log(ecloset);
+      event.preventDefault();
+      /*saveProduct[o] = saveProduct.filter(
+        (s) => s.id !== id && s.color !== color
+      );
       localStorage.setItem("product", JSON.stringify(saveProduct));
-      article.remove();
-      calculate();
+      article.remove(article[o]);
+      calculate();*/
     });
   }
 }
+
 productDelete();
 
 /*Quantité à modifier page panier*/
 function quantityChange() {
   let saveProduct = JSON.parse(localStorage.getItem("product"));
-  const input = document.querySelectorAll("input.itemQuantity");
+  const INPUT = document.querySelectorAll("input.itemQuantity");
   /*console.log(saveProduct);
   fewDataQantity = [];
   let butonAdd = document.querySelectorAll(".itemQuantity");
@@ -124,9 +129,9 @@ calculate();
 /*Formulaire*/
 
 function informationsSend() {
-  const btnSend = document.querySelector("#order");
-  btnSend.addEventListener("click", (event) => {
-    event.preventDefault(); //change le comportement par défaut lorsque qu'on clique sur un bouton
+  const BTNSEND = document.querySelector("#order");
+  BTNSEND.addEventListener("click", (event) => {
+    event.preventDefault();
 
     //Formulaire
     let contact = {
@@ -137,46 +142,78 @@ function informationsSend() {
       email: document.querySelector("#email").value,
     };
 
-    localStorage.setItem("contact", JSON.stringify(contact));
-
     //Contrôler le formulaire
 
-    //Firstname et Lastname
-    function nameControl() {
-      /*"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie*/
-      /*const firstNameControl = contact.firstName;
-      console.log(firstNameControl);*/
+    //Firstname, Lastname, City
 
-      //"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie
-      if (/^[A-Za-z,-]{2,10}$/.test(contact.firstName)) {
+    const alertValue = (variable) => {
+      return `${variable} :  Les caractères spéciaux ne sont pas valides ( sauf - et . ) \n La saisie doit faire au minimum deux lettres et au maximum quinze lettres`;
+    };
+
+    const REGEXFLC = (value) => {
+      return /^[\w^.-]{2,15}[\w]{2,6}$/.test(value);
+    };
+    /*"/": prend en compte ; "^": début de la saisie; "$": fin de la saisie*/
+
+    function firstnameControl() {
+      if (REGEXFLC(contact.firstName)) {
+        console.log("ok");
         return true;
       } else {
-        
-        alert("Les caractères spéciaux ne sont pas valides (sauf le - et .) \n Le prénom doit au minimum faire deux lettres et au maximum dix lettres");
+        console.log("ko");
+        alert(alertValue("Prénom"));
         return false;
       }
     }
-    
-    if (nameControl()) {
-        localStorage.setItem("contact", JSON.stringify(contact));
-        console.log(nameControl());
-    } else {
-        alert("La saisie est erronée");
-        console.log(nameControl());
-      }
 
-    
+    function lastnameControl() {
+      if (REGEXFLC(contact.lastName)) {
+        console.log("ok");
+        return true;
+      } else {
+        console.log("ko");
+        alert(alertValue("Nom"));
+        return false;
+      }
+    }
+
+    function cityControl() {
+      if (REGEXFLC(contact.city)) {
+        console.log("ok");
+        return true;
+      } else {
+        console.log("ko");
+        alert(alertValue("Ville"));
+        return false;
+      }
+    }
+
+    if (firstnameControl() && lastnameControl() && cityControl()) {
+      localStorage.setItem("contact", JSON.stringify(contact));
+    } else {
+    }
+
+    //Adresse
+
+    //Email
+
+    /*const REGEXEM = (value) => {
+      return /^         $/.test(value);*/
+
+    // "(" : permet la répitétions
+
+    //^([A-Za-z0-9_-.])+@([A-Za-z0-9_-.])+.([A-Za-z]{2,4})$/.test
+    ///^[A-Za-z,-]{2,15}$/.test
 
     //Objet contenant les produits et le contact
     let saveProduct = JSON.parse(localStorage.getItem("product"));
 
-    const sendInformationsAll = {
+    const SENDINFOALL = {
       saveProduct,
       contact,
     };
-    console.log(sendInformationsAll);
+    console.log(SENDINFOALL);
   });
-  
 }
 
 informationsSend();
