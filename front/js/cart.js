@@ -44,7 +44,6 @@ function productDelete() {
   const BUTONDELETE = document.querySelectorAll(".deleteItem");
   for (let o = 0; o < BUTONDELETE.length; o++) {
     BUTONDELETE[o].addEventListener("click", (event) => {
-      event.preventDefault();
       let article = event.target.closest("article");
       let id = article.dataset.id;
       let color = article.dataset.color;
@@ -222,24 +221,32 @@ function informationsSend() {
     
     /*Numéro de commande*/
 
-    function sendtoConfirmation() {
-      let post = {
-        method: "POST",
-        body: JSON.stringify(SENDINFOALL),
-        headers: {"Content-Type": "application/json"},
-      };
-    }
-      if (sendtoConfirmation == true ) {
-      } else {
-        fetch("http://localhost:3000/api/products/order", post)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            document.location.href = "confirmation.html?orderId="+data.orderId;
-          });
+    
+      function sendtoConfirmation() {
+        let post  = {
+          method: "POST",
+          body: JSON.stringify(SENDINFOALL),
+          headers: {"Content-Type": "application/json"}
+        }
+
+        if (SENDINFOALL == true) {
+          fetch("http://localhost:3000/api/products/order")
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              let orderId = data.orderId
+              window.location.href = `./confirmation.html?id=${orderId}`;
+              console.log(orderId);
+            })
+        } else {
+          
+       //window.location.href= `./confirmation.html?id=${orderId}` ; 
+   
       }
-  });
-  
+
+    }
+    
+ })
 
 }
 
