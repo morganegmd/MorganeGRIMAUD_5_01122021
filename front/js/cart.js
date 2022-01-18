@@ -47,10 +47,8 @@ function productDelete() {
       let article = event.target.closest("article");
       let id = article.dataset.id;
       let color = article.dataset.color;
-      
-      saveProduct[o] = saveProduct.filter(
-        (s) => s.id !== id && s.color !== color
-      );
+
+      saveProduct = saveProduct.filter((s) => s.id !== id || s.color !== color);
       localStorage.setItem("product", JSON.stringify(saveProduct));
       article.remove();
       calculate();
@@ -70,7 +68,7 @@ function quantityChange() {
       let article = event.target.closest("article");
       let id = article.dataset.id;
       let color = article.dataset.color;
-      let quantity = parseInt(butonAdd[w].value)
+      let quantity = parseInt(butonAdd[w].value);
       for (let h = 0; h < saveProduct.length; h++) {
         if (saveProduct[h].id == id && saveProduct[h].color == color) {
           saveProduct[h].quantity = quantity;
@@ -79,10 +77,8 @@ function quantityChange() {
           return;
         }
       }
-      
-    })
+    });
   }
-  
 }
 quantityChange();
 
@@ -96,7 +92,7 @@ function calculate() {
   for (let pushPrice of saveProduct) {
     fullPrice += pushPrice.price * pushPrice.quantity;
     fullQuantity += pushPrice.quantity;
-    console.log(pushPrice)
+    console.log(pushPrice);
   }
   document.getElementById("totalQuantity").innerHTML = fullQuantity;
   document.getElementById("totalPrice").innerHTML = fullPrice;
@@ -167,11 +163,10 @@ function informationsSend() {
     }
 
     //Adresse
-    
+
     const REGEXA = (value) => {
       return /^[\sA-Za-z0-9,.]{5,35}[\sA-Za-z0-9]{5,35}$/.test(value);
-    
-    }
+    };
 
     function addressControl() {
       if (REGEXA(contact.address)) {
@@ -188,8 +183,8 @@ function informationsSend() {
 
     const REGEXEM = (value) => {
       return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
-     // "(" : permet la répétitions
-    }
+      // "(" : permet la répétitions
+    };
 
     function emailControl() {
       if (REGEXEM(contact.email)) {
@@ -204,8 +199,16 @@ function informationsSend() {
 
     //Envoie dans le localStorage
 
-    if (firstnameControl() && lastnameControl() && cityControl() &&   emailControl() && addressControl()) {
+    let verification = false;
+    if (
+      firstnameControl() &&
+      lastnameControl() &&
+      cityControl() &&
+      emailControl() &&
+      addressControl()
+    ) {
       localStorage.setItem("contact", JSON.stringify(contact));
+      verification = true;
     } else {
       //Pas d'actions nécessaire
     }
@@ -213,42 +216,38 @@ function informationsSend() {
     //Objet contenant les produits et le contact
     let saveProduct = JSON.parse(localStorage.getItem("product"));
 
+    let products = [];
+    saveProduct.forEach((element) => products.push(element.id));
+
     const SENDINFOALL = {
-      saveProduct,
+      products,
       contact,
     };
     console.log(SENDINFOALL);
-    
+
     /*Numéro de commande*/
 
-    
-      function sendtoConfirmation() {
-        let post  = {
-          method: "POST",
-          body: JSON.stringify(SENDINFOALL),
-          headers: {"Content-Type": "application/json"}
-        }
+    function sendtoConfirmation() {
+      let post = {
+        method: "POST",
+        body: JSON.stringify(SENDINFOALL),
+        headers: { "Content-Type": "application/json" },
+      };
 
-        if (SENDINFOALL == true) {
-          fetch("http://localhost:3000/api/products/order")
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-              let orderId = data.orderId
-              window.location.href = `./confirmation.html?id=${orderId}`;
-              console.log(orderId);
-            })
-        } else {
-          
-       //window.location.href= `./confirmation.html?id=${orderId}` ; 
-   
+      if (verification && products.length > 0) {
+        fetch("http://localhost:3000/api/products/order", post)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            let orderId = data.orderId;
+            window.location.href = `./confirmation.html?id=${orderId}`;
+            console.log(orderId);
+          });
       }
-
     }
-    
- })
 
+    sendtoConfirmation();
+  });
 }
-
 
 informationsSend();
