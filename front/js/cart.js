@@ -225,7 +225,7 @@ function informationsSend() {
     };
     console.log(SENDINFOALL);
 
-    /*Numéro de commande*/
+    /*Enregistrer la commande*/
 
     function sendtoConfirmation() {
       let post = {
